@@ -1,4 +1,4 @@
-Tie-Sub version 0.01
+Tie-Sub version 0.02
 ====================
 
 Subroutines don't have interpreted into strings.
@@ -21,7 +21,7 @@ DEPENDENCIES
 This module requires these other modules and libraries:
 
   Carp
-  Tie::Scalar
+  Tie::Hash
 
 COPYRIGHT AND LICENCE
 

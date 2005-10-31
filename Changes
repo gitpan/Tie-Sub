@@ -4,3 +4,8 @@ Revision history for Perl extension Locale::Maketext::TieHash::L10N.
 	- original version; created by h2xs 1.23 with options
 		-XA -n Tie::Sub
 
+0.02  Mon Oct 31 21:18:28 2005
+	- fix documentaton bugs
+        - fix require Tie::...
+        - but README is going to readme always, a WINDOWS bug 
+

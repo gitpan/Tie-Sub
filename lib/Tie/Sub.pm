@@ -5,16 +5,16 @@ use strict;
 use warnings;
 use Carp qw(croak);
 
-require Tie::Scalar;
-our @ISA = 'Tie::Scalar';
+require Tie::Hash;
+our @ISA = 'Tie::Hash';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 my %sub; # object data encapsulated
 
-sub TIEHASH
-{ my $self;
-  ($self = bless \$self, shift)->Config(@_);
+sub TIEHASH {
+  my $scalar;
+  (my $self = bless \$scalar, shift)->Config(@_);
   $self;
 }
 
@@ -35,8 +35,8 @@ sub Config {
 }
 
 # execute the sub
-sub FETCH
-{ # object, key
+sub FETCH {
+  # object, key
   my ($self, $key) = @_;
   $sub{$self} or croak 'Call of Config is necessary.';
   # Several parameters to sub will submit as reference on an array.
@@ -63,7 +63,7 @@ Tie::Sub - Tying subroutine to a hash
 
  print "See $sub{4} digits.";
  # result:
- # 0004
+ # See 0004 digits.
 
 =head2 Sample 2: like subroutine
 
@@ -103,7 +103,7 @@ write C<"...$sub{abc}...">.
 Think about:
 
  use Tie::Sub;
- use Encode::Entities;
+ HTML::Entities;
  tie my %encode_entities, 'Tie::Sub', sub{encode_entities shift);
  print <<EOT;
    <html>
@@ -153,11 +153,17 @@ Free encapsulated object data.
 
 =head1 SEE ALSO
 
-Tie::Hash
+L<Tie::Hash>
+
+L<http://perl.plover.com/Identity/>
+L<http://perl.plover.com/Interpolation/>
+L<Interpolation> # contains much things
+L<Tie::Function> # maybe there is a problem near C<$;> in your Arguments
+L<Tie::LazyFunction>
 
 =head1 AUTHOR
 
-Steffen Winkler, E<cpan@steffen-winkler.de>;
+Steffen Winkler, E<lt>cpan@steffen-winkler.deE<gt>;
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -166,5 +172,6 @@ Copyright (C) 2005 by Steffen Winkler
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.6.1 or,
 at your option, any later version of Perl 5 you may have available.
+
 
 =cut
