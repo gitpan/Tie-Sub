@@ -9,3 +9,6 @@ Revision history for Perl extension Locale::Maketext::TieHash::L10N.
         - fix require Tie::...
         - but README is going to readme always, a WINDOWS bug 
 
+0.03  Wed Nov 02 19:56:46 2005
+	- fix documentaton bugs
+

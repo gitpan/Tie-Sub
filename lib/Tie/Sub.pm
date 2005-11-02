@@ -8,7 +8,7 @@ use Carp qw(croak);
 require Tie::Hash;
 our @ISA = 'Tie::Hash';
 
-our $VERSION = '0.02';
+our $VERSION = 0.03;
 
 my %sub; # object data encapsulated
 
@@ -137,7 +137,7 @@ C<">ConfigC<"> stores your own subroutine.
 
 The method calls croak, if the key is not a reference of C<">CODEC<">.
 
-<">ConfigC<"> gives a code reference.
+C<">ConfigC<"> gives a code reference.
 
 =head2 FETCH
 
@@ -156,9 +156,13 @@ Free encapsulated object data.
 L<Tie::Hash>
 
 L<http://perl.plover.com/Identity/>
+
 L<http://perl.plover.com/Interpolation/>
+
 L<Interpolation> # contains much things
+
 L<Tie::Function> # maybe there is a problem near C<$;> in your Arguments
+
 L<Tie::LazyFunction>
 
 =head1 AUTHOR
