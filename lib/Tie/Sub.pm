@@ -3,12 +3,12 @@ package Tie::Sub;
 use 5.006001;
 use strict;
 use warnings;
-use Carp qw(croak);
+use Carp 'croak';
 
 require Tie::Hash;
 our @ISA = 'Tie::Hash';
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 my %sub; # object data encapsulated
 
@@ -40,7 +40,7 @@ sub FETCH {
   my ($self, $key) = @_;
   $sub{$self} or croak 'Call of Config is necessary.';
   # Several parameters to sub will submit as reference on an array.
-  $sub{$self}->(ref $key eq 'ARRAY' ? @{$key} : $key);
+  $sub{$self}->(ref $key eq 'ARRAY' ? @$key : $key);
 }
 
 1;
@@ -59,10 +59,12 @@ Tie::Sub - Tying subroutine to a hash
  use warnings;
 
  use Tie::Sub;
+
+ # one step for tie and configure
  tie my %sub, 'Tie::Sub', sub{sprintf '%04d', shift};
 
  print "See $sub{4} digits.";
- # result:
+ # result is:
  # See 0004 digits.
 
 =head2 Sample 2: like subroutine
@@ -71,19 +73,26 @@ Tie::Sub - Tying subroutine to a hash
  use warnings;
 
  use Tie::Sub;
- my %sub, 'Tie::Sub';
- # the other way to config later
- tied(%sub}->Config( sub{ [ map sprintf("%04d\n", $_), @_ ] } );
 
- print @{ $sub{[0..2]} };
- # result:
+Save the object $sub if you like to use it later.
+
+ my $sub = tie my %sub, 'Tie::Sub';
+
+Here you can see the other way to configure after tie.
+Configuration can be repeated.
+$sub is the same like tied(%sub) but to save the objekt is much easier.
+
+ $sub->Config( sub{ [ map sprintf("%04d\n", $_), @_ ] } );
+
+ print @{ $sub{[0..2]} }; # Hash key and return value are both array references. 
+ # results are:
  # 0000
  # 0001
  # 0002
 
 =head2 Read configuration
 
- my $config = tied(%sub)->Config();
+ my $config = tied(%sub)->Config;
 
 =head2 Write configuration
 
@@ -125,23 +134,25 @@ There is no way to return a list.
 =head2 TIEHASH
 
  use Tie::Sub;
- tie my %sub, 'Tie::Sub', sub{yourcode};
+ my $object = tie my %sub, 'Tie::Sub', sub{yourcode};
 
 C<">TIEHASHC<"> ties your hash and set options defaults.
 
 =head2 Config
 
-C<">ConfigC<"> stores your own subroutine.
+C<">ConfigC<"> stores your own subroutine
 
- tied(%sub)->Config(sub {yourcode});
+You can get back the former code reference or use the method Config in void context.
+When you configure the first subroutine, the method will give back undef.
 
-The method calls croak, if the key is not a reference of C<">CODEC<">.
+ $coderef = tied(%sub)->Config(sub {yourcode});
 
-C<">ConfigC<"> gives a code reference.
+The method calls croak if you have a parameter and this parameter is not a reference of C<">CODEC<">.
 
 =head2 FETCH
 
-Give your parameter as key of your hash.
+Give your parameter as key of your tied hash.
+This key can be a string or an array reference when you have more then one.
 C<">FETCHC<"> will run your tied sub and give back the returns of your sub.
 Think about, return value can't be a list, but reference of such things.
 
