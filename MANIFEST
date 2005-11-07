@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Tie-Sub.t
+lib/Tie/Sub.pm
+META.yml                                 Module meta-data (added by MakeMaker)
