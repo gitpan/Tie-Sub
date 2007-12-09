@@ -1,7 +1,14 @@
+Build.PL
 Changes
-Makefile.PL
-MANIFEST
-README
-t/Tie-Sub.t
 lib/Tie/Sub.pm
-META.yml                                 Module meta-data (added by MakeMaker)
+MANIFEST			This list of files
+README
+t/01_basics.t
+t/02_like_function.t
+t/03_like_sub.t
+t/04_like_method.t
+t/98_pod.t
+t/99_pod_coverage.t
+WS_FTP.LOG
+Makefile.PL
+META.yml
