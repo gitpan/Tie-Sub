@@ -1,22 +1,25 @@
 ---
 name: Tie-Sub
-version: 0.05
+version: 0.06
 author:
-  - 'Steffen Winkler <steffenw@cpan.org>'
-abstract: 'Tying a subroutine, function or method to a hash'
+  - 'Steffen Winkler <steffenw at cpan.org>'
+abstract: 'Tie::Sub - Tying a subroutine, function or method to a hash'
 license: perl
 resources:
   license: http://dev.perl.org/licenses/
 requires:
-  Carp: 0
   Params::Validate: 0
 build_requires:
+  Test::Simple: 0
+recommends:
   Test::More: 0
+  Test::Pod: 1.14
+  Test::Pod::Coverage: 1.04
 provides:
   Tie::Sub:
     file: lib/Tie/Sub.pm
-    version: 0.05
-generated_by: Module::Build version 0.2801
+    version: 0.06
+generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

@@ -3,23 +3,28 @@ use warnings;
 
 use Module::Build;
 
-my $build = Module::Build->new(
+Module::Build->new(
     module_name       => 'Tie::Sub',
     license           => 'perl',
-    dist_author       => 'Steffen Winkler <steffenw@cpan.org>',
+    dist_abstract     => 'Tie::Sub - Tying a subroutine, function or method to a hash',
+    dist_author       => 'Steffen Winkler <steffenw at cpan.org>',
     dist_version_from => 'lib/Tie/Sub.pm',
     requires          => {
-        Carp               => '0',
-        'Params::Validate' => '0',
+        # Carp             => 0, # perl dist
+        'Params::Validate' => 0,
     },
     build_requires    => {
-        'Test::More' => '0',
+        'Test::Simple' => 0, # for Test::More
+    },
+    recommends => {
+        # build
+        'Test::Pod'           => '1.14',
+        'Test::Pod::Coverage' => '1.04',
+        'Test::More'          => 0,
     },
     create_makefile_pl   => 'traditional',
     recursive_test_files => 1,
-    add_to_cleanup       => [
-        'META.yml', '*.bak', '*.gz', 'Makefile.PL',
-    ],
-);
-
-$build->create_build_script();
+    add_to_cleanup       => [ qw(
+        META.yml *.bak *.gz Makefile.PL
+    ) ],
+)->create_build_script();

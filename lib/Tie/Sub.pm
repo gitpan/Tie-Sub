@@ -3,7 +3,7 @@ package Tie::Sub;
 use strict;
 use warnings;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Carp qw(confess);
 use Params::Validate qw(:all);
@@ -53,10 +53,10 @@ sub FETCH {
 
     # Several parameters to the subroutine will submit as reference on an array.
     return ${$self}->(
-         ref $key eq 'ARRAY'
-         ? @$key
-         : $key
-     );
+        ref $key eq 'ARRAY'
+        ? @{$key}
+        : $key
+    );
 }
 
 1;
@@ -71,7 +71,7 @@ Tie::Sub - Tying a subroutine, function or method to a hash
 
 =head1 VERSION
 
-0.05
+0.06
 
 =head1 SYNOPSIS
 
@@ -103,7 +103,7 @@ or initialize late too
 
     use Tie::Sub;
 
-    tie my %sprintf_04d, 'Tie::Sub', sub {sprintf '%04', shift};
+    tie my %sprintf_04d, 'Tie::Sub', sub {sprintf '%04d', shift};
 
     # The hash key and return value are both scalars.
     print "See $sprintf_04d{4}, not $sprintf_04d{5} digits.";
@@ -121,10 +121,10 @@ or more flexible
 
     use Tie::Sub;
 
-    tie my %sprintf, 'Tie::Sub', sub {sprintf @_};
+    tie my %sprintf, 'Tie::Sub', sub {sprintf shift, shift};
 
     # The hash key is an array reference, the return value is a scalar.
-    print "See $sprintf{['%04', 4)]} digits.";
+    print "See $sprintf{['%04d', 4]} digits.";
 
     __END__
 
@@ -138,24 +138,29 @@ or more flexible
     use warnings;
 
     use Tie::Sub;
+    use English qw($LIST_SEPARATOR);
 
-    tie my %sprintf, 'Tie::Sub', sub {
+    tie my %sprintf_multi, 'Tie::Sub', sub {
         return ! @_
                ? q{}
                : @_ > 1
-               ? [ map sprintf("%04d\n", $_), @_ ]
-               : sprintf "%04d\n" shift;
+               ? [ map {sprintf "%04d\n", $_} @_ ]
+               : sprintf "%04d\n", shift;
     };
 
     # The hash key and the return value ar both scalars or array references.
-    print <<"EOT";
+    {
+        use English qw($LIST_SEPARATOR);
+        local $LIST_SEPARATOR = q{};
+        print <<"EOT";
     See the following lines
     scalar
-    $sprintf_04d{10}
+    $sprintf_multi{10}
     arrayref
-    @{ $sprintf_04d{20 .. 22]} }
+    @{ $sprintf_multi{[20 .. 22]} }
     and be lucky.
     EOT
+    }
 
     __END__
 
@@ -164,10 +169,12 @@ or more flexible
     See the following lines
     scalar
     0010
+
     arrayref
     0020
     0021
     0022
+
     and be lucky.
 
 =head3 usage like method
@@ -193,7 +200,7 @@ or more flexible
 
     # Hash key and return value are both array references.
     print <<"EOT";
-    Hello $cgi{[param => 'firstname']} $cgi{[param => 'lastname']!
+    Hello $cgi{[param => 'firstname']} $cgi{[param => 'lastname']}!
     EOT
 
     __END__
@@ -209,6 +216,11 @@ or more flexible
 =head2 Write configuration
 
     my $config = (tied %subroutine)->Config( sub{yourcode} );
+
+=head1 EXAMPLE
+
+Inside of this Distribution is a directory named example.
+Run this *.pl files.
 
 =head1 DESCRIPTION
 
@@ -281,7 +293,6 @@ Carp
 
 L<Params::Validate>
 
-
 =head1 INCOMPATIBILITIES
 
 not known
@@ -310,9 +321,9 @@ Steffen Winkler
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2005-2007,
+Copyright (c) 2005-2008,
 Steffen Winkler
-C<< <steffenw@cpan.org> >>.
+C<< <steffenw at cpan.org> >>.
 All rights reserved.
 
 This module is free software;

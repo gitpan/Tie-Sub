@@ -1,5 +1,6 @@
 Build.PL
 Changes
+example/example.pl
 lib/Tie/Sub.pm
 MANIFEST			This list of files
 README
@@ -9,6 +10,5 @@ t/03_like_sub.t
 t/04_like_method.t
 t/98_pod.t
 t/99_pod_coverage.t
-WS_FTP.LOG
 Makefile.PL
 META.yml

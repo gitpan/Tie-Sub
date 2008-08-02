@@ -1,4 +1,4 @@
-Tie-Sub version 0.05
+Tie-Sub version 0.06
 ====================
 
 Subroutines don't have interpreted into strings.
@@ -31,9 +31,9 @@ This module requires these other modules and libraries:
 
 COPYRIGHT AND LICENCE
 
-Copyright (c) 2005 - 2007,
+Copyright (c) 2005 - 2008,
 Steffen Winkler
-steffenw@cpan.org.
+steffenw at cpan.org.
 All rights reserved.
 
 This module is free software;
