@@ -3,10 +3,12 @@ package Tie::Sub;
 use strict;
 use warnings;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Carp qw(confess);
 use Params::Validate qw(:all);
+
+## no critic (ArgUnpacking)
 
 sub TIEHASH {
     my ($class, $code_ref) = validate_pos(
@@ -15,16 +17,17 @@ sub TIEHASH {
         {type => CODEREF, optional => 1},
     );
 
-    my $self = bless \do{my $scalar}, $class;
+    my $scalar;
+    my $self = bless \$scalar, $class;
     if ($code_ref) {
-        $self->Config($code_ref);
+        $self->config($code_ref);
     }
 
     return $self;
 }
 
 # configure
-sub Config {
+sub config {
     # object, parameter
     my ($self, $code_ref) = validate_pos(
         @_,
@@ -40,6 +43,8 @@ sub Config {
     return $previous_code_ref;
 }
 
+*Config = \&config;
+
 # execute the code reference
 sub FETCH {
     # object, key
@@ -49,7 +54,7 @@ sub FETCH {
         {type => SCALAR | ARRAYREF},
     );
 
-    ${$self} or confess 'Call of method "Config" is necessary';
+    ${$self} or confess 'Call of method "config" is necessary';
 
     # Several parameters to the subroutine will submit as reference on an array.
     return ${$self}->(
@@ -58,6 +63,8 @@ sub FETCH {
         : $key
     );
 }
+
+# $Id$
 
 1;
 
@@ -71,7 +78,7 @@ Tie::Sub - Tying a subroutine, function or method to a hash
 
 =head1 VERSION
 
-0.06
+0.07
 
 =head1 SYNOPSIS
 
@@ -87,12 +94,12 @@ Tie::Sub - Tying a subroutine, function or method to a hash
 or initialize late
 
     tie my %subroutine, 'Tie::Sub';
-    (tied %subroutine)->Config(sub { ... });
+    (tied %subroutine)->config(sub { ... });
 
 or initialize late too
 
     my $object = tie my %subroutine, 'Tie::Sub';
-    $object->Config(sub { ... });
+    $object->config(sub { ... });
 
 =head2 interpolate subroutines in a string
 
@@ -141,11 +148,10 @@ or more flexible
     use English qw($LIST_SEPARATOR);
 
     tie my %sprintf_multi, 'Tie::Sub', sub {
-        return ! @_
-               ? q{}
-               : @_ > 1
-               ? [ map {sprintf "%04d\n", $_} @_ ]
-               : sprintf "%04d\n", shift;
+        return
+            ! @_     ? q{}
+            : @_ > 1 ? [ map {sprintf "%04d\n", $_} @_ ]
+            : sprintf "%04d\n", shift;
     };
 
     # The hash key and the return value ar both scalars or array references.
@@ -211,11 +217,11 @@ or more flexible
 
 =head2 Read configuration
 
-    my $config = (tied %subroutine)->Config();
+    my $config = (tied %subroutine)->config();
 
 =head2 Write configuration
 
-    my $config = (tied %subroutine)->Config( sub{yourcode} );
+    my $config = (tied %subroutine)->config( sub{yourcode} );
 
 =head1 EXAMPLE
 
@@ -259,16 +265,20 @@ There is no way to return a list.
 
 'TIEHASH' ties your hash and set options defaults.
 
-=head2 method Config
+=head2 method config
 
-'Config' stores your own subroutine
+'config' stores your own subroutine
 
-You can get back the previous code reference or use the method Config in void context.
+You can get back the previous code reference or use the method config in void context.
 When you configure the first subroutine, the method will give back undef.
 
-    $previous_coderef = (tied %subroutine)->Config(sub {yourcode});
+    $previous_coderef = (tied %subroutine)->config(sub {yourcode});
 
 The method calls croak if you have a parameter and this parameter is not a reference of 'CODE'.
+
+=head2 method Config (deprecated)
+
+The same like method config.
 
 =head2 method FETCH
 
@@ -321,7 +331,7 @@ Steffen Winkler
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2005-2008,
+Copyright (c) 2005 - 2009,
 Steffen Winkler
 C<< <steffenw at cpan.org> >>.
 All rights reserved.

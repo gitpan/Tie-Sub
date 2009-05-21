@@ -8,7 +8,10 @@ t/01_basics.t
 t/02_like_function.t
 t/03_like_sub.t
 t/04_like_method.t
-t/98_pod.t
-t/99_pod_coverage.t
+t/05_deprecated_config.t
+t/chars.t
+t/perl_critic.t
+t/pod.t
+t/pod_coverage.t
 Makefile.PL
 META.yml

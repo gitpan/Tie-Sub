@@ -3,7 +3,8 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2;
+use Test::More tests => 2 + 1;
+use Test::NoWarnings;
 
 BEGIN {
     use_ok('Tie::Sub');

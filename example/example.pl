@@ -3,18 +3,20 @@
 use strict;
 use warnings;
 
+our $VERSION = 0;
+
 use Tie::Sub;
 
 # 1 parameter, 1 return
-tie my %sprintf_04d, 'Tie::Sub', sub {sprintf '%04d', shift};
-print "See $sprintf_04d{4}, not $sprintf_04d{5} digits.\n\n";
+tie my %sprintf_04d, 'Tie::Sub', sub {sprintf '%04d', shift}; ## no critic (Ties)
+() = print "See $sprintf_04d{4}, not $sprintf_04d{5} digits.\n\n";
 
 # many parameters, 1 return
-tie my %sprintf, 'Tie::Sub', sub {sprintf shift, shift};
-print "See $sprintf{['%04d', 4]} digits.\n\n";
+tie my %sprintf, 'Tie::Sub', sub {sprintf shift, shift}; ## no critic (Ties)
+() = print "See $sprintf{['%04d', 4]} digits.\n\n";
 
 # many parameters, many return
-tie my %sprintf_multi, 'Tie::Sub', sub {
+tie my %sprintf_multi, 'Tie::Sub', sub { ## no critic (Ties)
     return ! @_
            ? q{}
            : @_ > 1
@@ -22,10 +24,10 @@ tie my %sprintf_multi, 'Tie::Sub', sub {
            : sprintf "%04d\n", shift;
 };
 {
-    use English qw($LIST_SEPARATOR);
+    use English qw(-no_match_vars $LIST_SEPARATOR);
 
     local $LIST_SEPARATOR = q{};
-    print <<"EOT";
+    () = print <<"EOT";
 See the following lines
 scalar
 $sprintf_multi{10}
@@ -38,7 +40,7 @@ EOT
 
 # method calls
 my $cgi = CGI->new();
-tie my %cgi, 'Tie::Sub', sub {
+tie my %cgi, 'Tie::Sub', sub { ## no critic (Ties)
     my ($method, @params) = @_;
 
     my @result = $cgi->$method(@params);
@@ -50,7 +52,7 @@ tie my %cgi, 'Tie::Sub', sub {
            : $result[0];
 };
 
-print <<"EOT";
+() = print <<"EOT";
 Hello $cgi{[param => 'firstname']} $cgi{[param => 'lastname']}!
 EOT
 
@@ -69,3 +71,5 @@ sub param {
         lastname  => 'Winkler',
     }->{$name};
 }
+
+# $Id$
