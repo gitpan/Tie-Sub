@@ -14,7 +14,9 @@ Module::Build->new(
         'Params::Validate' => 0,
     },
     build_requires    => {
-        'Test::Simple' => 0, # for Test::More
+        'Test::Simple'     => 0, # for Test::More
+        'Test::Exception'  => 0,
+        'Test::NoWarnings' => 0,
     },
     recommends => {
         # build

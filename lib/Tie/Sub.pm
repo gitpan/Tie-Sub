@@ -3,7 +3,7 @@ package Tie::Sub;
 use strict;
 use warnings;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 use Carp qw(confess);
 use Params::Validate qw(:all);
@@ -78,7 +78,7 @@ Tie::Sub - Tying a subroutine, function or method to a hash
 
 =head1 VERSION
 
-0.07
+0.08
 
 =head1 SYNOPSIS
 

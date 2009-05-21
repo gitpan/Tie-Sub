@@ -1,5 +1,8 @@
 Revision history for Perl extension Tie::Sub.
 
+0.08  Thu May 21 16:00:00 2009
+- add build requires only
+
 0.07  Thu May 21 10:09:30 2009
 - perl critic
 
