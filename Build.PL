@@ -10,13 +10,16 @@ Module::Build->new(
     dist_author       => 'Steffen Winkler <steffenw at cpan.org>',
     dist_version_from => 'lib/Tie/Sub.pm',
     requires          => {
+        perl               => 5.006001,
         # Carp             => 0, # perl dist
+        # English          => 0, # perl dist
         'Params::Validate' => 0,
     },
-    build_requires    => {
+    build_requires => {
+        # Cwd              => 0, # perl dist
         'Test::Simple'     => 0, # for Test::More
-        'Test::Exception'  => 0,
         'Test::NoWarnings' => 0,
+        'Test::Exception'  => 0,
     },
     recommends => {
         # build

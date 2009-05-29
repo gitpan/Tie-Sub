@@ -17,11 +17,12 @@ tie my %sprintf, 'Tie::Sub', sub {sprintf shift, shift}; ## no critic (Ties)
 
 # many parameters, many return
 tie my %sprintf_multi, 'Tie::Sub', sub { ## no critic (Ties)
-    return ! @_
-           ? q{}
-           : @_ > 1
-           ? [ map {sprintf "%04d\n", $_} @_ ]
-           : sprintf "%04d\n", shift;
+    return
+        ! @_
+        ? q{}
+        : @_ > 1
+        ? [ map {sprintf "%04d\n", $_} @_ ]
+        : sprintf "%04d\n", shift;
 };
 {
     use English qw(-no_match_vars $LIST_SEPARATOR);
@@ -45,11 +46,12 @@ tie my %cgi, 'Tie::Sub', sub { ## no critic (Ties)
 
     my @result = $cgi->$method(@params);
 
-    return ! @result
-           ? ()
-           : @result > 1
-           ? \@result
-           : $result[0];
+    return
+        ! @result
+        ? ()
+        : @result > 1
+        ? \@result
+        : $result[0];
 };
 
 () = print <<"EOT";

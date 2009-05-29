@@ -3,7 +3,7 @@ package Tie::Sub;
 use strict;
 use warnings;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Carp qw(confess);
 use Params::Validate qw(:all);
@@ -78,7 +78,7 @@ Tie::Sub - Tying a subroutine, function or method to a hash
 
 =head1 VERSION
 
-0.08
+0.09
 
 =head1 SYNOPSIS
 
@@ -149,8 +149,10 @@ or more flexible
 
     tie my %sprintf_multi, 'Tie::Sub', sub {
         return
-            ! @_     ? q{}
-            : @_ > 1 ? [ map {sprintf "%04d\n", $_} @_ ]
+            ! @_
+            ? q{}
+            : @_ > 1
+            ? [ map {sprintf "%04d\n", $_} @_ ]
             : sprintf "%04d\n", shift;
     };
 
@@ -197,11 +199,12 @@ or more flexible
 
         my @result = $cgi->$method(@params);
 
-        return ! @result
-               ? ()
-               : @result > 1
-               ? \@result
-               : $result[0];
+        return
+            ! @result
+            ? ()
+            : @result > 1
+            ? \@result
+            : $result[0];
     };
 
     # Hash key and return value are both array references.

@@ -4,8 +4,8 @@ use strict;
 use warnings;
 
 use Test::More tests => 3 + 1;
-use Test::Exception;
 use Test::NoWarnings;
+use Test::Exception;
 
 BEGIN {
     use_ok('Tie::Sub');
