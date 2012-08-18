@@ -1,4 +1,4 @@
-#!perl
+#!perl ## no critic (TidyCode)
 
 use strict;
 use warnings;
@@ -29,10 +29,12 @@ $default_hash{c}
 $default_hash{d}
 EOT
 
-# returns:
-# x
-# y
-# z
-# default
-
 # $Id$
+
+__END__
+
+Output:
+x
+y
+z
+default

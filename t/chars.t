@@ -7,8 +7,8 @@ use Cwd qw(getcwd);
 use File::Find;
 use Test::More;
 
-$ENV{TEST_AUTHOR}
-    or plan skip_all => 'Author test. Set $ENV{TEST_AUTHOR} to a true value to run.';
+$ENV{AUTHOR_TESTING}
+    or plan( skip_all => 'Author test. Set $ENV{AUTHOR_TESTING} to a true value to run.' );
 
 my $UNTAINT_FILENAME_PATTERN = qr{\A (
     (?:
@@ -27,12 +27,15 @@ find(
         untaint         => 1,
         wanted          => sub {
             -d and return;
-            $File::Find::name =~ m{/ \.svn / | \.mo \z}xms
-                and return;
-            $File::Find::name !~ m{
+            $File::Find::name =~ m{
+                / \.svn /
+                | / \.git /
+                | / \.gitignore \z
+            }xms and return;
+            $File::Find::name =~ m{
                 (
                     (?: /lib/ | /example/ | /t/ )
-                    | /Build\.pl \z
+                    | /Build\.PL \z
                     | /Changes \z
                     | /README \z
                     | /MANIFEST\.SKIP \z
@@ -44,17 +47,23 @@ find(
     $PATH,
 );
 
-plan ( tests => 5 * scalar @list );
+plan( tests => 6 * scalar @list );
+
+my @ignore_non_ascii = (
+);
 
 for my $file_name (sort @list) {
     my @lines;
     {
-        open my $file, '<: raw', $file_name
+        open my $file, '< :raw', $file_name
             or die "Cannnot open file $file_name";
         local $/ = ();
         my $text = <$file>;
         # repair last line without \n
-        $text =~ s{[^\x0D\x0A] \z}{\x0D\x0A}xms;
+        ok(
+            ! ( $text =~ s{([^\x0D\x0A]) \z}{$1\x0D\x0A}xms ),
+            "$file_name has newline at EOF",
+        );
         @lines = split m{\x0A}, $text;
     }
 
@@ -80,7 +89,7 @@ for my $file_name (sort @list) {
     };
 
     $find_line_numbers->(
-        "$file_name has Network line endings (LFCR)",
+        "$file_name has network line endings (LFCR)",
         'line endings',
         qr{\x0D \z}xms,
         1,
@@ -95,11 +104,19 @@ for my $file_name (sort @list) {
         'control chars',
         qr{[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]}xms,
     );
-    $find_line_numbers->(
-        "$file_name has no nonASCII chars",
-        'nonASCII chars',
-        qr{[\x80-\xFF]}xms,
-    );
+    NON_ASCII: {
+        for my $regex (@ignore_non_ascii) {
+            if ( $file_name =~ $regex ) {
+                ok(1, 'dummy');
+                next NON_ASCII;
+            }
+        }
+        $find_line_numbers->(
+            "$file_name has no nonASCII chars",
+            'nonASCII chars',
+            qr{[\x80-\xA6\xA8-\xFF]}xms, # A7 is §
+        );
+    }
     $find_line_numbers->(
         "$file_name has no trailing space",
         'trailing space',

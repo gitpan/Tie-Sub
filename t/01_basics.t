@@ -45,7 +45,7 @@ throws_ok(
 
 # read back no configuration
 ok(
-    ! defined $object->config(),
+    ! defined $object->config,
     'read back no configuration',
 );
 my $sub1 = sub {};
@@ -55,7 +55,7 @@ ok(
 );
 
 # read back true configuration
-my $sub2 = sub {return shift};
+my $sub2 = sub { return shift };
 cmp_ok(
     $object->config($sub2),
     'eq',

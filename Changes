@@ -1,5 +1,10 @@
 Revision history for Perl extension Tie::Sub.
 
+1.000  Sat Aug 18 23:26:42 2012
+- renew module
+- removed Build.PL from distibution
+- removed deprecated method Config (use method config instead)
+
 0.09  Fri May 29 20:00:00 2009
 - bugfix build dependencies
 - add example
@@ -31,7 +36,7 @@ Revision history for Perl extension Tie::Sub.
 0.02  Mon Oct 31 21:18:28 2005
 - fix documentation bugs
 - fix require Tie::...
-- but README is going to readme always, a WINDOWS bug 
+- but README is going to readme always, a WINDOWS bug
 
 0.01  Tue Sep 27 23:24:33 2005
 - original version; created by h2xs 1.23 with options

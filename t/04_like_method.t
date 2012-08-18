@@ -10,14 +10,14 @@ BEGIN {
     use_ok('Tie::Sub');
 }
 
-my $test = Tie::Sub::Test->new({test_key => 'test_value'});
+my $test = Tie::Sub::Test->new({ test_key => 'test_value' });
 tie my %test, 'Tie::Sub', sub {
     my ($method, $parameter) = @_;
 
     return $test->$method($parameter);
 };
 is(
-    $test{[get => 'test_key']},
+    $test{ [ get => 'test_key' ] },
     'test_value',
     'method return value',
 );
@@ -31,5 +31,5 @@ sub new {
 }
 
 sub get {
-    return shift->{shift()};
+    return shift->{ shift() };
 }

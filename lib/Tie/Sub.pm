@@ -1,9 +1,9 @@
-package Tie::Sub;
+package Tie::Sub; ## no critic (TidyCode)
 
 use strict;
 use warnings;
 
-our $VERSION = '0.09';
+our $VERSION = '1.000';
 
 use Carp qw(confess);
 use Params::Validate qw(:all);
@@ -43,8 +43,6 @@ sub config {
     return $previous_code_ref;
 }
 
-*Config = \&config;
-
 # execute the code reference
 sub FETCH {
     # object, key
@@ -70,15 +68,13 @@ sub FETCH {
 
 __END__
 
-=pod
-
 =head1 NAME
 
 Tie::Sub - Tying a subroutine, function or method to a hash
 
 =head1 VERSION
 
-0.09
+1.000
 
 =head1 SYNOPSIS
 
@@ -94,12 +90,12 @@ Tie::Sub - Tying a subroutine, function or method to a hash
 or initialize late
 
     tie my %subroutine, 'Tie::Sub';
-    (tied %subroutine)->config(sub { ... });
+    ( tied %subroutine )->config( sub { ... } );
 
 or initialize late too
 
     my $object = tie my %subroutine, 'Tie::Sub';
-    $object->config(sub { ... });
+    $object->config( sub { ... } );
 
 =head2 interpolate subroutines in a string
 
@@ -110,7 +106,7 @@ or initialize late too
 
     use Tie::Sub;
 
-    tie my %sprintf_04d, 'Tie::Sub', sub {sprintf '%04d', shift};
+    tie my %sprintf_04d, 'Tie::Sub', sub { sprintf '%04d', shift };
 
     # The hash key and return value are both scalars.
     print "See $sprintf_04d{4}, not $sprintf_04d{5} digits.";
@@ -128,10 +124,10 @@ or more flexible
 
     use Tie::Sub;
 
-    tie my %sprintf, 'Tie::Sub', sub {sprintf shift, shift};
+    tie my %sprintf, 'Tie::Sub', sub { sprintf shift, shift };
 
     # The hash key is an array reference, the return value is a scalar.
-    print "See $sprintf{['%04d', 4]} digits.";
+    print "See $sprintf{ [ '%04d', 4 ] } digits.";
 
     __END__
 
@@ -152,7 +148,7 @@ or more flexible
             ! @_
             ? q{}
             : @_ > 1
-            ? [ map {sprintf "%04d\n", $_} @_ ]
+            ? [ map { sprintf "%04d\n", $_ } @_ ]
             : sprintf "%04d\n", shift;
     };
 
@@ -165,7 +161,7 @@ or more flexible
     scalar
     $sprintf_multi{10}
     arrayref
-    @{ $sprintf_multi{[20 .. 22]} }
+    @{ $sprintf_multi{ [ 20 .. 22 ] } }
     and be lucky.
     EOT
     }
@@ -193,7 +189,7 @@ or more flexible
     use Tie::Sub;
     use CGI;
 
-    my $cgi = CGI->new();
+    my $cgi = CGI->new;
     tie my %cgi, 'Tie::Sub', sub {
         my ($method, @params) = @_;
 
@@ -209,7 +205,7 @@ or more flexible
 
     # Hash key and return value are both array references.
     print <<"EOT";
-    Hello $cgi{[param => 'firstname']} $cgi{[param => 'lastname']}!
+    Hello $cgi{ [ param => 'firstname' ] } $cgi{ [ param => 'lastname' ] }!
     EOT
 
     __END__
@@ -220,11 +216,11 @@ or more flexible
 
 =head2 Read configuration
 
-    my $config = (tied %subroutine)->config();
+    my $config = ( tied %subroutine )->config;
 
 =head2 Write configuration
 
-    my $config = (tied %subroutine)->config( sub{yourcode} );
+    my $config = ( tied %subroutine )->config( sub{ yourcode } );
 
 =head1 EXAMPLE
 
@@ -264,7 +260,7 @@ There is no way to return a list.
 =head2 method TIEHASH
 
     use Tie::Sub;
-    my $object = tie my %subroutine, 'Tie::Sub', sub {yourcode};
+    my $object = tie my %subroutine, 'Tie::Sub', sub { yourcode };
 
 'TIEHASH' ties your hash and set options defaults.
 
@@ -272,22 +268,22 @@ There is no way to return a list.
 
 'config' stores your own subroutine
 
-You can get back the previous code reference or use the method config in void context.
-When you configure the first subroutine, the method will give back undef.
+You can get back the previous code reference
+or use the method config in void context.
+When you configure the first subroutine,
+the method will give back undef.
 
-    $previous_coderef = (tied %subroutine)->config(sub {yourcode});
+    $previous_coderef = ( tied %subroutine )->config( sub { yourcode } );
 
-The method calls croak if you have a parameter and this parameter is not a reference of 'CODE'.
-
-=head2 method Config (deprecated)
-
-The same like method config.
+The method calls croak if you have a parameter
+and this parameter is not a reference of 'CODE'.
 
 =head2 method FETCH
 
 Give your parameter as key of your tied hash.
 This key can be a string or an array reference when you have more then one.
-'FETCH' will run your tied subroutine and give back the returns of your subroutine.
+'FETCH' will run your tied subroutine
+and give back the returns of your subroutine.
 Think about, return value can't be a list, but reference of such things.
 
     ... = $subroutine{param};
@@ -302,9 +298,9 @@ nothing
 
 =head1 DEPENDENCIES
 
-Carp
+L<Carp|Carp>
 
-L<Params::Validate>
+L<Params::Validate|Params::Validate>
 
 =head1 INCOMPATIBILITIES
 
@@ -316,17 +312,17 @@ not known
 
 =head1 SEE ALSO
 
-L<Tie::Hash>
+L<Tie::Hash|Tie::Hash>
 
-L<http://perl.plover.com/Identity/>
+L<http://perl.plover.com/Identity/|http://perl.plover.com/Identity/>
 
-L<http://perl.plover.com/Interpolation/>
+L<http://perl.plover.com/Interpolation/|http://perl.plover.com/Interpolation/>
 
-Interpolation # contains much things
+L<Interpolation|Interpolation> # contains much things
 
-L<Tie::Function> # maybe there is a problem near '$;' in your Arguments
+L<Tie::Function|Tie::Function> # maybe there is a problem near '$;' in your Arguments
 
-L<Tie::LazyFunction>
+L<Tie::LazyFunction|Tie::LazyFunction>
 
 =head1 AUTHOR
 
@@ -334,7 +330,7 @@ Steffen Winkler
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2005 - 2009,
+Copyright (c) 2005 - 2012,
 Steffen Winkler
 C<< <steffenw at cpan.org> >>.
 All rights reserved.
@@ -342,5 +338,3 @@ All rights reserved.
 This module is free software;
 you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
-=cut

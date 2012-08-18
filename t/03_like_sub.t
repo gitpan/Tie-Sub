@@ -16,7 +16,7 @@ tie my %sub, 'Tie::Sub', sub {
     return [$p1, $p2];
 };
 is_deeply(
-    $sub{[1, 2]},
-    [1, 2],
+    $sub{ [ 1, 2 ] },
+    [ 1, 2 ],
     'check subroutine 2 parmams, 2 returns',
 );

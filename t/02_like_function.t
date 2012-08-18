@@ -10,7 +10,7 @@ BEGIN {
     use_ok('Tie::Sub');
 }
 
-tie my %sub, 'Tie::Sub', sub{shift() + 1};
+tie my %sub, 'Tie::Sub', sub{ shift() + 1 };
 cmp_ok(
     $sub{1},
     '==',
