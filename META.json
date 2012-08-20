@@ -17,6 +17,7 @@
       "build" : {
          "requires" : {
             "Cwd" : 0,
+            "Test::Differences" : "0.60",
             "Test::Exception" : 0,
             "Test::More" : 0,
             "Test::NoWarnings" : 0
@@ -43,7 +44,7 @@
    "provides" : {
       "Tie::Sub" : {
          "file" : "lib/Tie/Sub.pm",
-         "version" : "1.000"
+         "version" : "1.001"
       }
    },
    "release_status" : "stable",
@@ -52,5 +53,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "1.000"
+   "version" : "1.001"
 }

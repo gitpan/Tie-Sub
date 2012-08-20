@@ -1,5 +1,8 @@
 Revision history for Perl extension Tie::Sub.
 
+1.001  Mon Aug 20 07:28:12 2012
+- solved dependency Test::Differences
+
 1.000  Sat Aug 18 23:26:42 2012
 - renew module
 - removed Build.PL from distibution

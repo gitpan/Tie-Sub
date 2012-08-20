@@ -3,7 +3,7 @@ package Tie::Sub; ## no critic (TidyCode)
 use strict;
 use warnings;
 
-our $VERSION = '1.000';
+our $VERSION = '1.001';
 
 use Carp qw(confess);
 use Params::Validate qw(:all);
@@ -74,7 +74,7 @@ Tie::Sub - Tying a subroutine, function or method to a hash
 
 =head1 VERSION
 
-1.000
+1.001
 
 =head1 SYNOPSIS
 

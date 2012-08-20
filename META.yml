@@ -4,6 +4,7 @@ author:
   - 'Steffen Winkler <steffenw at cpan.org>'
 build_requires:
   Cwd: 0
+  Test::Differences: 0.60
   Test::Exception: 0
   Test::More: 0
   Test::NoWarnings: 0
@@ -19,7 +20,7 @@ name: Tie-Sub
 provides:
   Tie::Sub:
     file: lib/Tie/Sub.pm
-    version: 1.000
+    version: 1.001
 recommends:
   Test::Pod: 1.14
   Test::Pod::Coverage: 1.04
@@ -30,4 +31,4 @@ requires:
   perl: 5.006
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.000
+version: 1.001

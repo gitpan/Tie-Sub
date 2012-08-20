@@ -10,6 +10,7 @@ WriteMakefile
                    'Cwd' => 0,
                    'English' => 0,
                    'Params::Validate' => 0,
+                   'Test::Differences' => '0.60',
                    'Test::Exception' => 0,
                    'Test::More' => 0,
                    'Test::NoWarnings' => 0
